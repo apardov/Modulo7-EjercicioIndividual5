@@ -1,0 +1,59 @@
+{% extends 'todos/base.html' %}
+{% block logout %}
+    <a href="{% url 'accounts:logout' %}" class="ms-5 btn btn-outline-success btn-sm">Logout</a>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                <h4 class="text-center text-bg-light w-50 mx-auto rounded-3 m-4 p-1">Listado de Tareas</h4>
+            </div>
+        </div>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="d-flex justify-content-center">
+                <div class="alert alert-success w-50 text-center" role="alert">
+                    {{ message }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+        <div class="row d-flex justify-content-end">
+            <div class="col-3">
+                <a href="{% url 'todos:create_todo' %}" class="btn btn-secondary">Añadir Tarea</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mt-2">
+                <table class="table table-striped w-75 mx-auto pb-5">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tarea</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fecha Vencimiento</th>
+                        <th scope="col">Etiquetas</th>
+                        <th scope="col">Detalle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for todo in todos %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ todo.title }}</td>
+                            <td>{{ todo.status }}</td>
+                            <td>{{ todo.due_date }}</td>
+                            {% for label in todo.labels.all %}
+                                <td>{{ label }}</td>
+                            {% endfor %}
+                            <td><a class="btn btn-secondary" href="{% url 'todos:view_todo' todo.id %}">Ver</a></td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
